@@ -1,44 +1,70 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+let timeId;
 
 // canvas.style.backgroundColor = "rgb(139, 34, 34)";
 const stageWidth = document.body.clientWidth,
   stageHeight = document.body.clientHeight;
 
 const startPointX = stageWidth;
-const startPointY = stageHeight;
-
+const endPointY = stageHeight;
 let cp1x = stageWidth;
 let cp1y = stageHeight;
 let cp2x = 0;
 let cp2y = stageHeight;
-const endPointX = 0;
-const endPointY = stageHeight;
+const endPointX = 0,
+  startPointY = stageHeight;
 
-let speed = 5;
+let speed = 1;
 let increment = 0;
+
+let cpVal = -50;
+
+//let currentPointY;
 
 function drawBezierCurve() {
   increment = increment + speed;
+  cpVal += 0.1;
 
-  ctx.clearRect(0, 0, stageWidth, stageHeight);
-  ctx.beginPath();
-  ctx.lineWidth = 3;
-  ctx.moveTo(0, 0);
-  ctx.lineTo(stageWidth, 0);
-  ctx.lineTo(startPointX, startPointY);
-  ctx.bezierCurveTo(
-    cp1x,
-    stageHeight - increment,
-    cp2x,
-    stageHeight - increment,
-    endPointX,
-    endPointY
-  );
+  let currentCPYTop = stageHeight - increment;
 
-  ctx.fillStyle = " rgb(138, 17, 17)";
-  ctx.fill();
-  ctx.closePath();
+  if (cpVal >= 0) {
+    ctx.clearRect(0, 0, stageWidth, stageHeight);
+    ctx.beginPath();
+    ctx.fillRect(0, 0, stageWidth, currentCPYTop);
+    ctx.fillStyle = " rgb(138, 17, 17)";
+    ctx.fill();
+    ctx.closePath();
+  } else {
+    ctx.clearRect(0, 0, stageWidth, stageHeight);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(stageWidth, 0);
+    ctx.lineTo(stageWidth, stageHeight - increment);
+    ctx.bezierCurveTo(
+      stageWidth,
+      stageHeight + cpVal - increment,
+      0,
+      stageHeight + cpVal - increment,
+      0,
+      stageHeight - increment
+    );
+
+    ctx.fillStyle = " rgb(138, 17, 17)";
+    ctx.fill();
+    ctx.closePath();
+  }
+  //sideIncrement = increment + 0.1; // if. increment과 같아지면 -> 직사각형
+
+  //   if (increment === incrementSide) {
+  //     currentPointY = pointY;
+  //     ctx.clearRect(0, 0, stageWidth, stageHeight);
+  //     ctx.beginPath();
+  //     ctx.fillRect(0, 0, stageWidth, currentPointY - incrementSide);
+  //     ctx.closePath();
+  //   }
+
+  timeId = requestAnimationFrame(drawBezierCurve);
 }
 
 function resizeHandler() {
@@ -47,10 +73,8 @@ function resizeHandler() {
   ctx.scale(2, 2);
 
   drawBezierCurve();
-  let timeId = setInterval(drawBezierCurve, 50);
-
   window.addEventListener("click", function () {
-    clearInterval(timeId);
+    this.cancelAnimationFrame(timeId);
   });
 }
 
