@@ -2,25 +2,21 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 let timeId;
 
-// canvas.style.backgroundColor = "rgb(139, 34, 34)";
 const stageWidth = document.body.clientWidth,
   stageHeight = document.body.clientHeight;
 
-const startPointX = stageWidth;
-const endPointY = stageHeight;
-let cp1x = stageWidth;
-let cp1y = stageHeight;
-let cp2x = 0;
-let cp2y = stageHeight;
-const endPointX = 0,
-  startPointY = stageHeight;
+// const startPointX = stageWidth;
+// const endPointY = stageHeight;
+// let cp1x = stageWidth;
+// let cp1y = stageHeight;
+// let cp2x = 0;
+// let cp2y = stageHeight;
+// const endPointX = 0,
+//   startPointY = stageHeight;
 
 let speed = 10;
 let increment = 0;
-
 let cpVal = -50;
-
-//let currentPointY;
 
 function drawBezierCurve() {
   increment = increment + speed;
