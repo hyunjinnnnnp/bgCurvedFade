@@ -15,7 +15,7 @@ let cp2y = stageHeight;
 const endPointX = 0,
   startPointY = stageHeight;
 
-let speed = 1;
+let speed = 10;
 let increment = 0;
 
 let cpVal = -50;
@@ -24,11 +24,13 @@ let cpVal = -50;
 
 function drawBezierCurve() {
   increment = increment + speed;
-  cpVal += 0.1;
+  cpVal += 2;
 
   let currentCPYTop = stageHeight - increment;
-
-  if (cpVal >= 0) {
+  if (cpVal > 20) {
+    speed = 12;
+  }
+  if (cpVal >= 10) {
     ctx.clearRect(0, 0, stageWidth, stageHeight);
     ctx.beginPath();
     ctx.fillRect(0, 0, stageWidth, currentCPYTop);
@@ -49,20 +51,10 @@ function drawBezierCurve() {
       0,
       stageHeight - increment
     );
-
     ctx.fillStyle = " rgb(138, 17, 17)";
     ctx.fill();
     ctx.closePath();
   }
-  //sideIncrement = increment + 0.1; // if. increment과 같아지면 -> 직사각형
-
-  //   if (increment === incrementSide) {
-  //     currentPointY = pointY;
-  //     ctx.clearRect(0, 0, stageWidth, stageHeight);
-  //     ctx.beginPath();
-  //     ctx.fillRect(0, 0, stageWidth, currentPointY - incrementSide);
-  //     ctx.closePath();
-  //   }
 
   timeId = requestAnimationFrame(drawBezierCurve);
 }
